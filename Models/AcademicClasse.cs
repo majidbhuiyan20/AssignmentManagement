@@ -1,4 +1,4 @@
-public class Class
+public class AcademicClass
 {
     public int Id {get; set;} // here we are using Id as primary key for the class table(id is auto incremented by default in EF core) 
     public string Name {get; set;} = string.Empty;
