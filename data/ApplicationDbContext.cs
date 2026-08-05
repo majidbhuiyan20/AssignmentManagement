@@ -10,4 +10,5 @@ public class ApplicationDbContext : DbContext
     {}
     public DbSet<User> Users { get; set; }
     public DbSet<AcademicClass> AcademicClasses { get; set; }
+    public DbSet<Subject> Subjects { get; set; }
 }
