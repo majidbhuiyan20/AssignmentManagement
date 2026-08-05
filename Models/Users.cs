@@ -13,4 +13,12 @@ public class User
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
+
+    // Teacher -> Many TeacherAssignments
+    public ICollection<TeacherAssignment> TeacherAssignments { get; set; }
+        = new List<TeacherAssignment>();
+
+    // Student -> Many Submissions
+    public ICollection<Submission> Submissions { get; set; }
+        = new List<Submission>();
 }

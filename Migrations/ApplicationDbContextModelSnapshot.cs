@@ -45,6 +45,44 @@ namespace AssignmentManagement.Migrations
                     b.ToTable("AcademicClasses");
                 });
 
+            modelBuilder.Entity("Assignment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("MaxMarks")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TeacherAssignmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeacherAssignmentId");
+
+                    b.ToTable("Assignments");
+                });
+
             modelBuilder.Entity("Subject", b =>
                 {
                     b.Property<int>("Id")
@@ -70,6 +108,45 @@ namespace AssignmentManagement.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
+                });
+
+            modelBuilder.Entity("Submission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("AssignmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Feedback")
+                        .HasColumnType("text");
+
+                    b.Property<double?>("Marks")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StudentId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("SubmittedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssignmentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Submissions");
                 });
 
             modelBuilder.Entity("TeacherAssignment", b =>
@@ -137,6 +214,36 @@ namespace AssignmentManagement.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("Assignment", b =>
+                {
+                    b.HasOne("TeacherAssignment", "TeacherAssignment")
+                        .WithMany()
+                        .HasForeignKey("TeacherAssignmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TeacherAssignment");
+                });
+
+            modelBuilder.Entity("Submission", b =>
+                {
+                    b.HasOne("Assignment", "Assignment")
+                        .WithMany()
+                        .HasForeignKey("AssignmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("User", "Student")
+                        .WithMany("Submissions")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Assignment");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("TeacherAssignment", b =>
                 {
                     b.HasOne("AcademicClass", "AcademicClass")
@@ -152,7 +259,7 @@ namespace AssignmentManagement.Migrations
                         .IsRequired();
 
                     b.HasOne("User", "Teacher")
-                        .WithMany()
+                        .WithMany("TeacherAssignments")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -162,6 +269,13 @@ namespace AssignmentManagement.Migrations
                     b.Navigation("Subject");
 
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("User", b =>
+                {
+                    b.Navigation("Submissions");
+
+                    b.Navigation("TeacherAssignments");
                 });
 #pragma warning restore 612, 618
         }
