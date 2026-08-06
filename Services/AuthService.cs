@@ -59,34 +59,11 @@ public class AuthService : IAuthService
         Message = "User registered successfully."
     };
 }
-    public async Task<ApiResponse> LoginAsync(LoginRequest request)
+    public async Task<bool> LoginAsync(LoginRequest request)
     {
-        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        // Logic will come here
 
-        if(user == null)
-        {
-            return new ApiResponse
-            {
-                Success = false,
-                Message = "Invalid email or password"
-            };
-        }
-        bool isPasswordCorrect = _passwordHasher.VerifyPassword(request.Password, user.PasswordHash);
-        if (!isPasswordCorrect)
-        {
-            return new ApiResponse
-            {
-                Success = false,
-                Message = "Invalid email or password"
-            };
-        }
-        
-
-        return new ApiResponse
-        {
-            Success = true,
-            Message = "Login Successful"
-        };
+        return true;
     }
 
 }
