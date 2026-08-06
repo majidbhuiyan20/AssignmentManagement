@@ -122,3 +122,12 @@
 /Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/obj/Debug/net10.0/AssignmentManagement.genruntimeconfig.cache
 /Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/obj/Debug/net10.0/ref/AssignmentManagement.dll
 /Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/bin/Debug/net10.0/BCrypt-Net-Next.dll
+/Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/bin/Debug/net10.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/bin/Debug/net10.0/Microsoft.Bcl.Cryptography.dll
+/Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/bin/Debug/net10.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/bin/Debug/net10.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/bin/Debug/net10.0/Microsoft.IdentityModel.Logging.dll
+/Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/bin/Debug/net10.0/Microsoft.IdentityModel.Protocols.dll
+/Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/bin/Debug/net10.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/bin/Debug/net10.0/Microsoft.IdentityModel.Tokens.dll
+/Users/apple/Documents/MajidMac/Task/Dot NET/Basics/BackendCourse/AssignmentManagement/bin/Debug/net10.0/System.IdentityModel.Tokens.Jwt.dll

@@ -16,8 +16,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 // Dependency Injection
-builder.Services.AddScoped<IPasswordHasher, PasswordHasherService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.AddScoped<IPasswordHasher, PasswordHasherService>();
+    builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.Configure<JwtSettings>(
+    builder.Configuration.GetSection("Jwt"));
+    builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 
 // Add services to the container.
