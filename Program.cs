@@ -1,4 +1,6 @@
 using AssignmentManagement.Data;
+using AssignmentManagement.Interfaces;
+using AssignmentManagement.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Dependency Injection
 builder.Services.AddScoped<IPasswordHasher, PasswordHasherService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 // Add services to the container.
