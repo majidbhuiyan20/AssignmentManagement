@@ -26,4 +26,14 @@ public async Task<IActionResult> Register(RegisterRequest request)
 
     return Ok(result);
 }
+[HttpPost("login")]
+public async Task<IActionResult> Login(LoginRequest request)
+    {
+        var result = await _authService.LoginAsync(request);
+        if (!result.Success)
+        {
+            return Unauthorized(result);
+        }
+        return Ok(result);
+    }
 }
