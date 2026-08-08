@@ -7,12 +7,15 @@ public class AuthService : IAuthService
 {
     private readonly ApplicationDbContext _context;
     private readonly IPasswordHasher _passwordHasher;
+    private readonly IJwtTokenService _jwtTokenService;
      public AuthService(
         ApplicationDbContext context,
-        IPasswordHasher passwordHasher)
+        IPasswordHasher passwordHasher,
+        IJwtTokenService jwtTokenService)
     {
         _context = context;
         _passwordHasher = passwordHasher;
+        _jwtTokenService = jwtTokenService;
     }
 
 
@@ -82,10 +85,23 @@ public class AuthService : IAuthService
         }
         
 
+        string token = _jwtTokenService.GenerateToken(user);
+
         return new ApiResponse
         {
             Success = true,
-            Message = "Login Successful"
+            Message = "Login Successful",
+            Data = new
+            {
+                Token = token,
+                User = new
+                {
+                    user.Id,
+                    user.FullName,
+                    user.Email,
+                    Role = user.Role.ToString()
+                }
+            }
         };
     }
 

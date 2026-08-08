@@ -1,4 +1,6 @@
+
+namespace AssignmentManagement.Interfaces;
 public interface IJwtTokenService
 {
-    string GenerateToken(string userId, string role);
+    string GenerateToken(User user);
 }
