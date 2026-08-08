@@ -25,6 +25,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.Configure<JwtSettings>(
     builder.Configuration.GetSection("Jwt"));
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
 
@@ -66,8 +68,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-}
 
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
