@@ -28,4 +28,20 @@ public class UserService : IUserService
             })
             .ToListAsync();
     }
+
+    public async Task<UserResponse?> GetUserByIdAsync(int id)
+{
+    return await _context.Users
+        .Where(user => user.Id == id)
+        .Select(user => new UserResponse
+        {
+            Id = user.Id,
+            FullName = user.FullName,
+            Email = user.Email,
+            Role = user.Role.ToString(),
+            CreatedAt = user.CreatedAt,
+            UpdatedAt = user.UpdatedAt
+        })
+        .FirstOrDefaultAsync();
+}
 }
