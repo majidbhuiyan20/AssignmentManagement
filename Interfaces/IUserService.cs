@@ -9,4 +9,5 @@ public interface IUserService
     Task<UserResponse?> UpdateUserAsync(
     int id,
     UpdateUserRequest request);
+    Task<bool> DeleteUserAsync(int id);
 }

@@ -91,4 +91,20 @@ public async Task<UserResponse?> UpdateUserAsync(
         UpdatedAt = user.UpdatedAt
     };
 }
+    public async Task<bool> DeleteUserAsync(int id)
+{
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Id == id);
+
+    if (user == null)
+    {
+        return false;
+    }
+
+    _context.Users.Remove(user);
+
+    await _context.SaveChangesAsync();
+
+    return true;
+}
 }

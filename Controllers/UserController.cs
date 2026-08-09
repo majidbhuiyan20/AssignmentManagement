@@ -61,4 +61,22 @@ public async Task<IActionResult> UpdateUser(
 
     return Ok(user);
 }
+    [HttpDelete("{id}")]
+public async Task<IActionResult> DeleteUser(int id)
+{
+    bool deleted = await _userService.DeleteUserAsync(id);
+
+    if (!deleted)
+    {
+        return NotFound(new
+        {
+            message = "User not found."
+        });
+    }
+
+    return Ok(new
+    {
+        message = "User deleted successfully."
+    });
+}
 }
