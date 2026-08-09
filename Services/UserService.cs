@@ -44,4 +44,51 @@ public class UserService : IUserService
         })
         .FirstOrDefaultAsync();
 }
+public async Task<UserResponse?> UpdateUserAsync(
+    int id,
+    UpdateUserRequest request)
+{
+    var user = await _context.Users
+        .FirstOrDefaultAsync(u => u.Id == id);
+
+    if (user == null)
+    {
+        return null;
+    }
+
+    bool emailExists = await _context.Users
+        .AnyAsync(u =>
+            u.Email == request.Email &&
+            u.Id != id);
+
+    if (emailExists)
+    {
+        throw new Exception("Email already exists.");
+    }
+
+    if (!Enum.TryParse<UserRole>(
+        request.Role,
+        true,
+        out var role))
+    {
+        throw new Exception("Invalid role.");
+    }
+
+    user.FullName = request.FullName;
+    user.Email = request.Email;
+    user.Role = role;
+    user.UpdatedAt = DateTime.UtcNow;
+
+    await _context.SaveChangesAsync();
+
+    return new UserResponse
+    {
+        Id = user.Id,
+        FullName = user.FullName,
+        Email = user.Email,
+        Role = user.Role.ToString(),
+        CreatedAt = user.CreatedAt,
+        UpdatedAt = user.UpdatedAt
+    };
+}
 }
