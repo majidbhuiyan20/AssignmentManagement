@@ -50,6 +50,7 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IClassService, ClassService>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
 
 
 // ======================================================
