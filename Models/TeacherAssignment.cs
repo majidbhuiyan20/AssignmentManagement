@@ -9,5 +9,7 @@ public class TeacherAssignment
     public Subject Subject { get; set; } = null!; // Navigation property to the Subject entity representing the subject
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
+    public ICollection<Assignment> Assignments { get; set; }
+    = new List<Assignment>();
 
 }
