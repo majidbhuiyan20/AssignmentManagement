@@ -36,6 +36,15 @@ public class TeacherAssignmentController
     public async Task<IActionResult>
         GetTeacherAssignmentById(int id)
     {
+        if (id <= 0)
+        {
+            return BadRequest(new
+            {
+                message =
+                    "Invalid teacher assignment id."
+            });
+        }
+
         var assignment =
             await _teacherAssignmentService
                 .GetTeacherAssignmentByIdAsync(id);
@@ -56,9 +65,28 @@ public class TeacherAssignmentController
         CreateTeacherAssignment(
             CreateTeacherAssignmentRequest request)
     {
-        var assignment =
-            await _teacherAssignmentService
-                .CreateTeacherAssignmentAsync(request);
+        TeacherAssignmentResponse assignment;
+
+        try
+        {
+            assignment =
+                await _teacherAssignmentService
+                    .CreateTeacherAssignmentAsync(request);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new
+            {
+                message = ex.Message
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new
+            {
+                message = ex.Message
+            });
+        }
 
         return CreatedAtAction(
             nameof(GetTeacherAssignmentById),
@@ -70,6 +98,15 @@ public class TeacherAssignmentController
     public async Task<IActionResult>
         DeleteTeacherAssignment(int id)
     {
+        if (id <= 0)
+        {
+            return BadRequest(new
+            {
+                message =
+                    "Invalid teacher assignment id."
+            });
+        }
+
         bool deleted =
             await _teacherAssignmentService
                 .DeleteTeacherAssignmentAsync(id);

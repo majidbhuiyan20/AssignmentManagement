@@ -72,7 +72,7 @@ public class TeacherAssignmentService
 
     if (teacher == null)
     {
-        throw new Exception(
+        throw new KeyNotFoundException(
             "Teacher not found.");
     }
 
@@ -82,7 +82,7 @@ public class TeacherAssignmentService
 
     if (academicClass == null)
     {
-        throw new Exception(
+        throw new KeyNotFoundException(
             "Class not found.");
     }
 
@@ -92,7 +92,7 @@ public class TeacherAssignmentService
 
     if (subject == null)
     {
-        throw new Exception(
+        throw new KeyNotFoundException(
             "Subject not found.");
     }
 
@@ -104,7 +104,7 @@ public class TeacherAssignmentService
 
     if (alreadyAssigned)
     {
-        throw new Exception(
+        throw new InvalidOperationException(
             "This teacher is already assigned to this class and subject.");
     }
 

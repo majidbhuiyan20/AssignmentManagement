@@ -28,6 +28,14 @@ public class SubjectController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetSubjectById(int id)
     {
+        if (id <= 0)
+        {
+            return BadRequest(new
+            {
+                message = "Invalid subject id."
+            });
+        }
+
         var subject = await _subjectService
             .GetSubjectByIdAsync(id);
 
@@ -46,8 +54,20 @@ public class SubjectController : ControllerBase
     public async Task<IActionResult> CreateSubject(
         CreateSubjectRequest request)
     {
-        var subject = await _subjectService
-            .CreateSubjectAsync(request);
+        SubjectResponse subject;
+
+        try
+        {
+            subject = await _subjectService
+                .CreateSubjectAsync(request);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new
+            {
+                message = ex.Message
+            });
+        }
 
         return CreatedAtAction(
             nameof(GetSubjectById),
@@ -60,8 +80,28 @@ public class SubjectController : ControllerBase
         int id,
         UpdateSubjectRequest request)
     {
-        var subject = await _subjectService
-            .UpdateSubjectAsync(id, request);
+        if (id <= 0)
+        {
+            return BadRequest(new
+            {
+                message = "Invalid subject id."
+            });
+        }
+
+        SubjectResponse? subject;
+
+        try
+        {
+            subject = await _subjectService
+                .UpdateSubjectAsync(id, request);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new
+            {
+                message = ex.Message
+            });
+        }
 
         if (subject == null)
         {
@@ -77,6 +117,14 @@ public class SubjectController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSubject(int id)
     {
+        if (id <= 0)
+        {
+            return BadRequest(new
+            {
+                message = "Invalid subject id."
+            });
+        }
+
         bool deleted = await _subjectService
             .DeleteSubjectAsync(id);
 

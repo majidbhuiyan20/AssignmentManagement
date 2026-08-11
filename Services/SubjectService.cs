@@ -40,17 +40,19 @@ public class SubjectService : ISubjectService
     public async Task<SubjectResponse> CreateSubjectAsync(
         CreateSubjectRequest request)
     {
+        string subjectName = request.Name.Trim();
+
         bool subjectExists = await _context.Subjects
-            .AnyAsync(subject => subject.Name == request.Name);
+            .AnyAsync(subject => subject.Name.ToLower() == subjectName.ToLower());
 
         if (subjectExists)
         {
-            throw new Exception("Subject already exists.");
+            throw new InvalidOperationException("Subject already exists.");
         }
 
         var subject = new Subject
         {
-            Name = request.Name
+            Name = subjectName
         };
 
         _context.Subjects.Add(subject);
@@ -68,6 +70,8 @@ public class SubjectService : ISubjectService
         int id,
         UpdateSubjectRequest request)
     {
+        string subjectName = request.Name.Trim();
+
         var subject = await _context.Subjects
             .FirstOrDefaultAsync(subject => subject.Id == id);
 
@@ -78,15 +82,15 @@ public class SubjectService : ISubjectService
 
         bool duplicate = await _context.Subjects
             .AnyAsync(subject =>
-                subject.Name == request.Name &&
+                subject.Name.ToLower() == subjectName.ToLower() &&
                 subject.Id != id);
 
         if (duplicate)
         {
-            throw new Exception("Subject already exists.");
+            throw new InvalidOperationException("Subject already exists.");
         }
 
-        subject.Name = request.Name;
+        subject.Name = subjectName;
 
         await _context.SaveChangesAsync();
 

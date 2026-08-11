@@ -48,6 +48,10 @@ public async Task<UserResponse?> UpdateUserAsync(
     int id,
     UpdateUserRequest request)
 {
+    string fullName = request.FullName.Trim();
+    string email = request.Email.Trim().ToLower();
+    string roleName = request.Role.Trim();
+
     var user = await _context.Users
         .FirstOrDefaultAsync(u => u.Id == id);
 
@@ -58,24 +62,24 @@ public async Task<UserResponse?> UpdateUserAsync(
 
     bool emailExists = await _context.Users
         .AnyAsync(u =>
-            u.Email == request.Email &&
+            u.Email.ToLower() == email &&
             u.Id != id);
 
     if (emailExists)
     {
-        throw new Exception("Email already exists.");
+        throw new InvalidOperationException("Email already exists.");
     }
 
     if (!Enum.TryParse<UserRole>(
-        request.Role,
+        roleName,
         true,
         out var role))
     {
-        throw new Exception("Invalid role.");
+        throw new InvalidOperationException("Invalid role.");
     }
 
-    user.FullName = request.FullName;
-    user.Email = request.Email;
+    user.FullName = fullName;
+    user.Email = email;
     user.Role = role;
     user.UpdatedAt = DateTime.UtcNow;
 

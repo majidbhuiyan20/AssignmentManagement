@@ -28,6 +28,14 @@ public class ClassController : ControllerBase
     [HttpGet("{id}")]
     public async Task<IActionResult> GetClassById(int id)
     {
+        if (id <= 0)
+        {
+            return BadRequest(new
+            {
+                message = "Invalid class id."
+            });
+        }
+
         var academicClass =
             await _classService.GetClassByIdAsync(id);
 
@@ -46,8 +54,20 @@ public class ClassController : ControllerBase
     public async Task<IActionResult> CreateClass(
         CreateClassRequest request)
     {
-        var academicClass =
-            await _classService.CreateClassAsync(request);
+        ClassResponse academicClass;
+
+        try
+        {
+            academicClass =
+                await _classService.CreateClassAsync(request);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new
+            {
+                message = ex.Message
+            });
+        }
 
         return CreatedAtAction(
             nameof(GetClassById),
@@ -60,8 +80,28 @@ public class ClassController : ControllerBase
         int id,
         UpdateClassRequest request)
     {
-        var academicClass =
-            await _classService.UpdateClassAsync(id, request);
+        if (id <= 0)
+        {
+            return BadRequest(new
+            {
+                message = "Invalid class id."
+            });
+        }
+
+        ClassResponse? academicClass;
+
+        try
+        {
+            academicClass =
+                await _classService.UpdateClassAsync(id, request);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new
+            {
+                message = ex.Message
+            });
+        }
 
         if (academicClass == null)
         {
@@ -77,6 +117,14 @@ public class ClassController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteClass(int id)
     {
+        if (id <= 0)
+        {
+            return BadRequest(new
+            {
+                message = "Invalid class id."
+            });
+        }
+
         var deleted =
             await _classService.DeleteClassAsync(id);
 

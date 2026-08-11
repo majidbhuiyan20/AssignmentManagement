@@ -21,7 +21,11 @@ public class AuthService : IAuthService
 
    public async Task<ApiResponse> RegisterAsync(RegisterRequest request)
 {
-    bool emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email);
+    string fullName = request.FullName.Trim();
+    string email = request.Email.Trim().ToLower();
+    string roleName = request.Role.Trim();
+
+    bool emailExists = await _context.Users.AnyAsync(u => u.Email.ToLower() == email);
 
     if (emailExists)
     {
@@ -32,9 +36,7 @@ public class AuthService : IAuthService
         };
     }
 
-    string passwordHash = _passwordHasher.HashPassword(request.Password);
-
-    if (!Enum.TryParse<UserRole>(request.Role, true, out var role))
+    if (!Enum.TryParse<UserRole>(roleName, true, out var role))
     {
         return new ApiResponse
         {
@@ -43,10 +45,12 @@ public class AuthService : IAuthService
         };
     }
 
+    string passwordHash = _passwordHasher.HashPassword(request.Password);
+
     User user = new User
     {
-        FullName = request.FullName,
-        Email = request.Email,
+        FullName = fullName,
+        Email = email,
         PasswordHash = passwordHash,
         Role = role,
         CreatedAt = DateTime.UtcNow
@@ -64,7 +68,9 @@ public class AuthService : IAuthService
 }
     public async Task<ApiResponse> LoginAsync(LoginRequest request)
     {
-        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
+        string email = request.Email.Trim().ToLower();
+
+        User? user = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email);
 
         if(user == null)
         {

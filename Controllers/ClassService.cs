@@ -40,17 +40,19 @@ public class ClassService : IClassService
     public async Task<ClassResponse> CreateClassAsync(
         CreateClassRequest request)
     {
+        string className = request.Name.Trim();
+
         var classExists = await _context.AcademicClasses
-            .AnyAsync(c => c.Name == request.Name);
+            .AnyAsync(c => c.Name.ToLower() == className.ToLower());
 
         if (classExists)
         {
-            throw new Exception("Class already exists.");
+            throw new InvalidOperationException("Class already exists.");
         }
 
         var academicClass = new AcademicClass
         {
-            Name = request.Name
+            Name = className
         };
 
         _context.AcademicClasses.Add(academicClass);
@@ -68,6 +70,8 @@ public class ClassService : IClassService
         int id,
         UpdateClassRequest request)
     {
+        string className = request.Name.Trim();
+
         var academicClass = await _context.AcademicClasses
             .FirstOrDefaultAsync(c => c.Id == id);
 
@@ -78,15 +82,15 @@ public class ClassService : IClassService
 
         var duplicate = await _context.AcademicClasses
             .AnyAsync(c =>
-                c.Name == request.Name &&
+                c.Name.ToLower() == className.ToLower() &&
                 c.Id != id);
 
         if (duplicate)
         {
-            throw new Exception("Class already exists.");
+            throw new InvalidOperationException("Class already exists.");
         }
 
-        academicClass.Name = request.Name;
+        academicClass.Name = className;
 
         await _context.SaveChangesAsync();
 

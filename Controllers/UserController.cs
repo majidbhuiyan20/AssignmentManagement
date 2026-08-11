@@ -29,6 +29,14 @@ public class UserController : ControllerBase
     [HttpGet("{id}")]
 public async Task<IActionResult> GetUserById(int id)
 {
+    if (id <= 0)
+    {
+        return BadRequest(new
+        {
+            message = "Invalid user id."
+        });
+    }
+
     var user = await _userService.GetUserByIdAsync(id);
 
     if (user == null)
@@ -47,9 +55,29 @@ public async Task<IActionResult> UpdateUser(
     int id,
     UpdateUserRequest request)
 {
-    var user = await _userService.UpdateUserAsync(
-        id,
-        request);
+    if (id <= 0)
+    {
+        return BadRequest(new
+        {
+            message = "Invalid user id."
+        });
+    }
+
+    UserResponse? user;
+
+    try
+    {
+        user = await _userService.UpdateUserAsync(
+            id,
+            request);
+    }
+    catch (InvalidOperationException ex)
+    {
+        return BadRequest(new
+        {
+            message = ex.Message
+        });
+    }
 
     if (user == null)
     {
@@ -64,6 +92,14 @@ public async Task<IActionResult> UpdateUser(
     [HttpDelete("{id}")]
 public async Task<IActionResult> DeleteUser(int id)
 {
+    if (id <= 0)
+    {
+        return BadRequest(new
+        {
+            message = "Invalid user id."
+        });
+    }
+
     bool deleted = await _userService.DeleteUserAsync(id);
 
     if (!deleted)
